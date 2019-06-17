@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require 'jobcan_slack'
+
+Slack.configure do |config|
+  config.token = ENV['SLACK_API_TOKEN']
+end
+
+channel = "##{ARGV.shift}"
+
+success = JobCanSlack.new(channel).touch
+puts success ? 'SUCCESS' : 'FAILURE'
+
+exit success
