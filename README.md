@@ -20,6 +20,5 @@ $ gem install jobcan_slack-${VERSION}.gem
 
 ```console
 $ export SLACK_API_TOKEN={legacy slack token} 
-$ export JOBCAN_SLACK_CHANNEL=${your public channel name}
-$ jobcan_touch
+$ jobcan_touch ${your public channel name (without # prefix)}
 ```
