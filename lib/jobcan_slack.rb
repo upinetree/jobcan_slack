@@ -17,12 +17,9 @@ class JobCanSlack
   end
 
   def touch
-    client.chat_postMessage(channel: @channel, text: 'Start touch command from ruby client')
-    begin
+    handle_exception do
+      client.chat_postMessage(channel: @channel, text: 'Start touch command from ruby client')
       client.chat_command(channel: @channel, command: COMMANDS[:touch])
-    rescue => e
-      client.chat_postMessage(channel: @channel, text: 'Command execution failure')
-      raise e.full_message
     end
 
     wait_response
@@ -31,11 +28,9 @@ class JobCanSlack
   end
 
   def worktime
-    begin
+    handle_exception do
+      client.chat_postMessage(channel: @channel, text: 'Start worktime command from ruby client')
       client.chat_command(channel: @channel, command: COMMANDS[:worktime])
-    rescue => e
-      client.chat_postMessage(channel: @channel, text: 'Command execution failure')
-      raise e.full_message
     end
 
     wait_response
@@ -58,5 +53,12 @@ class JobCanSlack
   def wait_response
     puts 'waiting for a response...'
     sleep WAITING_RESPONSE_SECONDS
+  end
+
+  def handle_exception
+    yield
+  rescue => e
+    client.chat_postMessage(channel: @channel, text: 'Command execution failure')
+    raise e
   end
 end
